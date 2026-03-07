@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jpd!&kzd=l2%%@-t*a36+%i9gl^%vtfha120kfwroggflz-3@9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['a3h.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
