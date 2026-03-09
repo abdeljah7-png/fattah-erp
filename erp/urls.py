@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.views import accueil
+
 
 admin.site.site_header="Application A3H"
 
 urlpatterns = [
-    path('', accueil, name="accueil"),   # <-- page d'accueil
     path('admin/', admin.site.urls),
     path('', include('ventes.urls')),
     path("", include("clients.urls")),
+    path('', include('core.urls')),
 ]
