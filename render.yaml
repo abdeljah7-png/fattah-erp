@@ -1,15 +1,9 @@
 services:
   - type: web
-    name: a3h
+    name: fattah-erp
     env: python
+    branch: main
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn erp.wsgi"
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: django-db
-          property: connectionString
-
-databases:
-  - name: django-db
-  
+    startCommand: "gunicorn erp.wsgi:application --bind 0.0.0.0:$PORT"
+    autoDeploy: true
+    plan: free
