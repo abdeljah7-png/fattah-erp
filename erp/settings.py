@@ -15,12 +15,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # SECURITY
-SECRET_KEY = 'django-insecure-jpd!&kzd=l2%%@-t*a36+%i9gl^%vtfha120kfwroggflz-3@9'
 
-DEBUG = True
+SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
+
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 # APPLICATIONS
 INSTALLED_APPS = [
@@ -123,8 +124,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # DEFAULT ID
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
