@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: fattah-erp
+    env: python
+    plan: free
+    buildCommand: bash start.sh
+    startCommand: bash start.sh
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: erp.settings
+      - key: SECRET_KEY
+        value: 'xe0+uc*yovi5+1j%n)bxd=c6^7n1td3clb3*%ugwyy!48rafm'
+
+     
