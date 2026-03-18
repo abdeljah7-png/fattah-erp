@@ -29,6 +29,7 @@ urlpatterns = [
     path("core/", include("core.urls")),
     path("cbc/", include("cbc.urls")),
     path("achats/", include("achats.urls")),
-     path('reglements/', include('reglements.urls')),
+    path('reglements/', include('reglements.urls')),
+    path("comptes/", include("comptes.urls")),
 
 ]

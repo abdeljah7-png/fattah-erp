@@ -31,6 +31,7 @@ class ReglementClient(models.Model):
 
     def save(self, *args, **kwargs):
 
+        nouveau = self.pk is None
         if not self.numero:
 
             dernier = ReglementClient.objects.order_by("-id").first()
@@ -44,6 +45,14 @@ class ReglementClient(models.Model):
 
         super().save(*args, **kwargs)
 
+        if nouveau:
+            MouvementCompte.objects.create(
+                date=self.date,
+                type_mouvement='entree',
+                compte=self.compte,
+                montant=self.montant,
+                reference=f"Reglement client {self.id}"
+            )
     def __str__(self):
         return self.numero
 
@@ -77,6 +86,8 @@ class ReglementFournisseur(models.Model):
 
     def save(self, *args, **kwargs):
 
+        nouveau = self.pk is None
+
         if not self.numero:
 
             dernier = ReglementFournisseur.objects.order_by("-id").first()
@@ -90,12 +101,20 @@ class ReglementFournisseur(models.Model):
 
         super().save(*args, **kwargs)
 
+        if nouveau:
+            MouvementCompte.objects.create(
+                date=self.date,
+                type_mouvement='sortie',
+                compte=self.compte,
+                montant=self.montant,
+                reference=f"Reglement fournisseur {self.id}"
+            )
+
     def __str__(self):
         return self.numero
 
 #-------- Class mouvement des comptes
 
-from django.db import models
 
 class MouvementCompte(models.Model):
 
@@ -105,25 +124,23 @@ class MouvementCompte(models.Model):
     )
 
     date = models.DateField()
-
-    type_mouvement = models.CharField(
-        max_length=10,
-        choices=TYPE_MOUVEMENT
-    )
-
+    type_mouvement = models.CharField(max_length=10, choices=TYPE_MOUVEMENT)
     compte = models.ForeignKey(
         'comptes.Compte',
         on_delete=models.PROTECT,
         related_name='mouvements'
     )
-
     montant = models.DecimalField(max_digits=12, decimal_places=3)
-
     reference = models.CharField(max_length=100, blank=True)
-
     observation = models.TextField(blank=True)
-
     origine = models.CharField(max_length=50, blank=True)
+
+    # Ici on crée une propriété pour générer la référence automatique
+    @property
+    def reference_auto(self):
+        # Si tu n'as pas de relation avec ReglementClient ou ReglementFournisseur
+        # on retourne juste un libellé type "MC n°ID"
+        return f"MC n°{self.id}"
 
     def __str__(self):
         return f"{self.date} - {self.compte} - {self.montant}"

@@ -1,0 +1,59 @@
+
+<form method="get">
+
+Date début
+<input type="date" name="date_debut" value="{{ date_debut }}">
+
+Date fin
+<input type="date" name="date_fin" value="{{ date_fin }}">
+
+<button type="submit">Afficher</button>
+
+<h2>{{ societe.nom }}</h2>
+<p>{{ societe.adresse }}</p>
+<hr>
+
+
+<h3>Relevé du compte : {{ compte }}</h3>
+
+<p><b>Report :</b> {{ report }}</p>
+
+
+
+<table border="1" width="100%">
+
+<tr>
+<th>Date</th>
+<th>Libellé</th>
+<th>Débit</th>
+<th>Crédit</th>
+<th>Solde</th>
+</tr>
+
+{% for l in lignes %}
+
+<tr>
+<td>{{ l.date }}</td>
+<td>{{ l.libelle }}</td>
+<td>{{ l.debit }}</td>
+<td>{{ l.credit }}</td>
+<td>{{ l.solde }}</td>
+</tr>
+
+{% endfor %}
+
+<tr>
+<td colspan="2"><b>Total</b></td>
+<td>{{ total_debit }}</td>
+<td>{{ total_credit }}</td>
+<td><b>{{ solde }}</b></td>
+</tr>
+
+</table>
+
+
+</form>
+<tr  colspan="2"> clique ici</tr>
+<a href="{% url 'releve_compte_pdf' compte.id %}" target="_blank">
+Imprimer PDF
+</a>
